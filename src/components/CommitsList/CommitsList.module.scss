@@ -1,0 +1,60 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    border:1px solid rgba(0,0,0,.15);
+    border-left: none;
+    margin: 10px 0 0;
+}
+
+.sortByRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items:baseline ;
+    padding-right: 20px;
+}
+
+.sortByLabel{
+    padding-right: 10px;
+}
+
+.dropDownList{
+    min-width: 200px;
+}
+
+.title{
+    text-align:start;
+    font-size: x-large;
+    margin: 0px;
+    padding:20px;
+}
+
+div.container >p{
+    padding:0 0 0 20px;
+    font-size:15px;
+}
+
+.commitContainer{
+    display: flex;
+    flex-direction: column;
+    border:1px solid rgba(0, 0, 0, 0.15);
+    align-items: flex-start ;
+    padding:10px;
+}
+
+.commitFooterContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding-top: 15px;
+}
+
+div.commitFooterContainer>div{
+    padding-right:20px;
+}
+
+h4{
+    margin:0;
+    text-align: start;
+}

@@ -1,0 +1,39 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    border:1px solid rgba(0,0,0,.15);
+    border-left: none;
+    margin: 10px 0 0 10px;
+}
+
+.sortByRow{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items:baseline ;
+    padding-right: 20px;
+}
+
+.sortByLabel{
+    padding-right: 10px;
+}
+
+.dropDownList{
+    min-width: 200px;
+}
+
+.title{
+    text-align:start;
+    font-size: x-large;
+    margin:0;
+    padding:20px;
+}
+
+h3, p{
+    margin:0
+}
+
+p{
+    font-size: 15px;
+}
