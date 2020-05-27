@@ -24,55 +24,68 @@ function* getListOfRepos(action) {
         }
         yield put(reposFetchSuccess(record))
     } catch (error) {
-        yield put(setErrorState())
+        yield put(setErrorState());
     }
 }
 
 function* changeReposSortByValue(action) {
     const { payload: { newSortByValue } } = action;
-    const reposList = yield select(state => get(state, 'reposList', []));
-    const sortedReposList = reposList.sort((a, b) => b[newSortByValue.value] - a[newSortByValue.value]);
-    const orgName = yield select(state => get(state, 'orgName'));
-    const branchesList = yield call(fetch, `${apiConstants.BASE_URL}/repos/${orgName}/${sortedReposList[0].name}/branches`);
-    const commitsList = yield call(fetch, `${apiConstants.BASE_URL}/repos/${orgName}/${sortedReposList[0].name}/commits`);
-    const record = {
-        reposList: sortedReposList,
-        selectedRepoIndex: 0,
-        selectedBranch: sortedReposList[0].default_branch,
-        branchesList: yield branchesList.json(),
-        commitsList: yield commitsList.json(),
-        sortReposBy: newSortByValue,
-        orgName
+    try {
+        const reposList = yield select(state => get(state, 'reposList', []));
+        const sortedReposList = reposList.sort((a, b) => b[newSortByValue.value] - a[newSortByValue.value]);
+        const orgName = yield select(state => get(state, 'orgName'));
+        const branchesList = yield call(fetch, `${apiConstants.BASE_URL}/repos/${orgName}/${sortedReposList[0].name}/branches`);
+        const commitsList = yield call(fetch, `${apiConstants.BASE_URL}/repos/${orgName}/${sortedReposList[0].name}/commits`);
+        const record = {
+            reposList: sortedReposList,
+            selectedRepoIndex: 0,
+            selectedBranch: sortedReposList[0].default_branch,
+            branchesList: yield branchesList.json(),
+            commitsList: yield commitsList.json(),
+            sortReposBy: newSortByValue,
+            orgName
+        }
+        yield put(reposFetchSuccess(record));
+    } catch (error) {
+        yield put(setErrorState());
     }
-    yield put(reposFetchSuccess(record));
+
 }
 
 function* changeBranch(action) {
     const { payload: { newBranch } } = action;
-    const orgName = yield select(state => get(state, 'orgName'));
-    const reposList = yield select(state => get(state, 'reposList', []));
-    const selectedRepoIndex = yield select(state => get(state, 'selectedRepoIndex', 0));
-    const commitsList = yield call(fetch, `${apiConstants.BASE_URL}/repos/${orgName}/${reposList[selectedRepoIndex].name}/commits?sha=${newBranch.value}`);
-    const record = {
-        selectedBranch: newBranch.label,
-        commitsList: yield commitsList.json()
+    try {
+        const orgName = yield select(state => get(state, 'orgName'));
+        const reposList = yield select(state => get(state, 'reposList', []));
+        const selectedRepoIndex = yield select(state => get(state, 'selectedRepoIndex', 0));
+        const commitsList = yield call(fetch, `${apiConstants.BASE_URL}/repos/${orgName}/${reposList[selectedRepoIndex].name}/commits?sha=${newBranch.value}`);
+        const record = {
+            selectedBranch: newBranch.label,
+            commitsList: yield commitsList.json()
+        }
+        yield put(updateCommitsList(record))
+    } catch (error) {
+        yield put(setErrorState());
     }
-    yield put(updateCommitsList(record))
 }
 /* destructure state */
 function* changeSelectedRepo(action) {
     const { payload: { index } } = action;
-    const orgName = yield select(state => get(state, 'orgName'));
-    const reposList = yield select(state => get(state, 'reposList', []));
-    const branchesList = yield call(fetch, `${apiConstants.BASE_URL}/repos/${orgName}/${reposList[index].name}/branches`);
-    const commitsList = yield call(fetch, `${apiConstants.BASE_URL}/repos/${orgName}/${reposList[index].name}/commits`);
-    const record = {
-        selectedRepoIndex: index,
-        selectedBranch: reposList[index].default_branch,
-        branchesList: yield branchesList.json(),
-        commitsList: yield commitsList.json(),
+    try {
+        const orgName = yield select(state => get(state, 'orgName'));
+        const reposList = yield select(state => get(state, 'reposList', []));
+        const branchesList = yield call(fetch, `${apiConstants.BASE_URL}/repos/${orgName}/${reposList[index].name}/branches`);
+        const commitsList = yield call(fetch, `${apiConstants.BASE_URL}/repos/${orgName}/${reposList[index].name}/commits`);
+        const record = {
+            selectedRepoIndex: index,
+            selectedBranch: reposList[index].default_branch,
+            branchesList: yield branchesList.json(),
+            commitsList: yield commitsList.json(),
+        }
+        yield put(ChangeSelectedRepoSuccess(record));
+    } catch (error) {
+        yield put(setErrorState());
     }
-    yield put(ChangeSelectedRepoSuccess(record));
 }
 
 export default function* netflixDemoProjectSaga() {
